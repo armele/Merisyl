@@ -1,0 +1,19 @@
+{
+    "name": "merisyl-pf2e",
+    "title": "Merisyl Pathfinder 2E",
+    "description": "Content to support the Merisyl world.",
+    "version": "0.0.1",
+    "author": "Al Mele",
+    "minimumCoreVersion": "0.8.6",
+    "compatibleCoreVersion": "0.8.9",
+    "packs": [
+        {
+            "name": "module-items",
+            "label": "Merisyl Items",
+            "path": "./packs/items.db",
+            "entity": "Item"
+        }
+    ],
+    "manifest": "",
+    "download": ""
+  }
