@@ -2,7 +2,7 @@
 	"name": "merisyl-pf2e",
 	"title": "Merisyl Pathfinder 2E",
 	"description": "Content to support the Merisyl world.",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"author": "Al Mele",
 	"minimumCoreVersion": "0.8.6",
 	"compatibleCoreVersion": "0.8.9",
@@ -17,6 +17,12 @@
 			"label": "Merisyl Creatures",
 			"path": "./packs/merisyl-creatures.db",
 			"entity": "Actor"
+		},
+		{
+			"name": "module-continents-verchix",
+			"label": "Merisyl Continents - Verchix",
+			"path": "./packs/merisyl-continents-verchix.db",
+			"entity": "Scene"
 		}
 	],
 	"dependencies": [{
