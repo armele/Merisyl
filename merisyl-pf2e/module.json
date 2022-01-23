@@ -5,7 +5,8 @@
 	"version": "0.0.5",
 	"author": "Al Mele",
 	"minimumCoreVersion": "0.8.6",
-	"compatibleCoreVersion": "0.9.242",
+	"compatibleCoreVersion": "9",
+	"minimumSystemVersion": "3.1.0",
 	"packs": [{
 			"name": "module-ancestries",
 			"label": "Merisyl Ancestries",
@@ -29,7 +30,13 @@
 			"label": "Merisyl Continents - Verchix",
 			"path": "./packs/merisyl-continents-verchix.db",
 			"entity": "Scene"
-		}
+		},
+		{
+			"name": "module-continents-chayle",
+			"label": "Merisyl Continents - Chayle",
+			"path": "./packs/merisyl-continents-chayle.db",
+			"entity": "Scene"
+		}		
 	],
 	"dependencies": [{
 		"name": "pf2e",
