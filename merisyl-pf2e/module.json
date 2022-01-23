@@ -2,16 +2,22 @@
 	"name": "merisyl-pf2e",
 	"title": "Merisyl Pathfinder 2E",
 	"description": "Content to support the Merisyl world.",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"author": "Al Mele",
 	"minimumCoreVersion": "0.8.6",
-	"compatibleCoreVersion": "0.8.9",
+	"compatibleCoreVersion": "0.9.242",
 	"packs": [{
-			"name": "module-items",
+			"name": "module-ancestries",
 			"label": "Merisyl Ancestries",
-			"path": "./packs/ancestries.db",
+			"path": "./packs/merisyl-ancestries.db",
 			"entity": "Item"
 		},
+		{
+			"name": "module-items",
+			"label": "Merisyl Items",
+			"path": "./packs/merisyl-items.db",
+			"entity": "Item"
+		},		
 		{
 			"name": "module-creatures",
 			"label": "Merisyl Creatures",
