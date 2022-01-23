@@ -2,7 +2,7 @@
 	"name": "merisyl-pf2e",
 	"title": "Merisyl Pathfinder 2E",
 	"description": "Content to support the Merisyl world.",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"author": "Al Mele",
 	"minimumCoreVersion": "0.8.6",
 	"compatibleCoreVersion": "9",
