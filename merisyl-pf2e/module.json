@@ -2,7 +2,7 @@
 	"name": "merisyl-pf2e",
 	"title": "Merisyl Pathfinder 2E",
 	"description": "Content to support the Merisyl world.",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"author": "Al Mele",
 	"minimumCoreVersion": "0.8.6",
 	"compatibleCoreVersion": "9",
@@ -36,6 +36,12 @@
 			"label": "Merisyl Continents - Chayle",
 			"path": "./packs/merisyl-continents-chayle.db",
 			"entity": "Scene"
+		},
+		{
+			"name": "module-effect-items",
+			"label": "Effect Items",
+			"path": "./packs/effect-items.db",
+			"entity": "Item"
 		}		
 	],
 	"dependencies": [{
