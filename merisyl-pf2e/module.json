@@ -1,67 +1,79 @@
 {
-	"name": "merisyl-pf2e",
+	"id": "merisyl-pf2e",
 	"title": "Merisyl Pathfinder 2E",
 	"description": "Content to support the Merisyl world.",
-	"version": "0.0.10",
+	"version": "0.0.11",
 	"author": "Al Mele",
-	"minimumCoreVersion": "0.8.6",
-	"compatibleCoreVersion": "10",
-	"minimumSystemVersion": "3.1.0",
+	"compatibility": {
+		"minimum": 8,
+		"verified": "11.300"
+	},
 	"packs": [
 		{
-			"name": "module-ancestries",
+			"id": "module-ancestries",
 			"label": "Merisyl Ancestries",
 			"path": "./packs/merisyl-ancestries.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
-			"name": "module-items",
+			"id": "module-items",
 			"label": "Merisyl Items",
 			"path": "./packs/merisyl-items.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
-			"name": "module-creatures",
+			"id": "module-creatures",
 			"label": "Merisyl Creatures",
 			"path": "./packs/merisyl-creatures.db",
-			"entity": "Actor"
+			"type": "Actor"
 		},
 		{
-			"name": "module-continents-verchix",
+			"id": "module-continents-verchix",
 			"label": "Merisyl Continents - Verchix",
 			"path": "./packs/merisyl-continents-verchix.db",
-			"entity": "Scene"
+			"type": "Scene"
 		},
 		{
-			"name": "module-continents-chayle",
+			"id": "module-continents-chayle",
 			"label": "Merisyl Continents - Chayle",
 			"path": "./packs/merisyl-continents-chayle.db",
-			"entity": "Scene"
+			"type": "Scene"
 		},
 		{
-			"name": "module-effect-items",
+			"id": "module-effect-items",
 			"label": "Effect Items",
 			"path": "./packs/effect-items.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
-			"name": "module-items-deities",
+			"id": "module-items-deities",
 			"label": "Merisyl Deities",
 			"path": "./packs/merisyl-deities.db",
-			"entity": "Item"
+			"type": "Item"
 		}
 	],
-	"dependencies": [
-		{
-			"name": "pf2e",
-			"type": "system"
-		},
-		{
-			"name": "monks-active-tiles",
-			"manifest": "https://github.com/ironmonk88/monks-active-tiles/releases/latest/download/module.json",
-			"type": "module"
-		}
-	],
+	"relationships": {
+		"systems": [
+			{
+				"id": "pf2e",
+				"type": "system",
+				"manifest": "https://github.com/foundryvtt/pf2e",
+				"compatibility": {
+					"verified": "5.0.2"
+				}
+			}
+		],
+		"requires": [
+			{
+				"id": "https://github.com/foundryvtt/pf2e",
+				"type": "module",
+				"manifest": "https://github.com/ironmonk88/monks-active-tiles/releases/latest/download/module.jso",
+				"compatibility": {
+					"verified": "11.01"
+				}
+			}
+		]
+	},
 	"manifest": "https://github.com/armele/Merisyl/raw/master/merisyl-pf2e/module.json",
 	"download": "https://github.com/armele/Merisyl/raw/master/merisyl-pf2e.zip"
 }
