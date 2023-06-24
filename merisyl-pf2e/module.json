@@ -7,8 +7,10 @@
 		"name": "Ayar Mandragoran",
 		"url": "http://www.merisyl.com"
 	}],
+	"minimumCoreVersion": "0.8.6",
+	"compatibleCoreVersion": "11",	
 	"compatibility": {
-		"minimum": "8.6",
+		"minimum": "0.8.6",
 		"verified": "11"
 	},
 	"url": "https://github.com/armele/Merisyl",
