@@ -65,9 +65,9 @@
 		],
 		"requires": [
 			{
-				"id": "https://github.com/foundryvtt/pf2e",
+				"id": "monks-active-tiles",
 				"type": "module",
-				"manifest": "https://github.com/ironmonk88/monks-active-tiles/releases/latest/download/module.jso",
+				"manifest": "https://github.com/ironmonk88/monks-active-tiles/releases/latest/download/module.json",
 				"compatibility": {
 					"verified": "11.01"
 				}
