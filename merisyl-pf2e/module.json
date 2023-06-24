@@ -2,17 +2,23 @@
 	"id": "merisyl-pf2e",
 	"title": "Merisyl Pathfinder 2E",
 	"description": "Content to support the Merisyl world.",
-	"version": "0.0.11",
-	"author": "Al Mele",
+	"version": "0.0.12",
+	"authors": [{
+		"name": "Ayar Mandragoran",
+		"url": "http://www.merisyl.com"
+	}],
 	"compatibility": {
-		"minimum": 8,
+		"minimum": "8.6",
 		"verified": "11"
 	},
-  "media": [{
-        "type": "setup",
-        "caption": "Merisyl Campaign Setting",
-        "thumbnail": "https://merisyl-foundry.s3.amazonaws.com/merisyl/deity/Patrael.png"
-  }],	
+	"url": "https://github.com/armele/Merisyl",
+	"media": [
+		{
+			"type": "setup",
+			"caption": "Merisyl Campaign Setting",
+			"thumbnail": "/modules/merisyl-pf2e/thumbnail.webp"
+		}
+	],
 	"packs": [
 		{
 			"name": "module-ancestries",
