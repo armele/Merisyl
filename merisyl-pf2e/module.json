@@ -6,8 +6,13 @@
 	"author": "Al Mele",
 	"compatibility": {
 		"minimum": 8,
-		"verified": "11.300"
+		"verified": "11"
 	},
+  "media": [{
+        "type": "setup",
+        "caption": "Merisyl Campaign Setting",
+        "thumbnail": "https://merisyl-foundry.s3.amazonaws.com/merisyl/deity/Patrael.png"
+  }],	
 	"packs": [
 		{
 			"name": "module-ancestries",
