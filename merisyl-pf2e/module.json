@@ -10,43 +10,43 @@
 	},
 	"packs": [
 		{
-			"id": "module-ancestries",
+			"name": "module-ancestries",
 			"label": "Merisyl Ancestries",
 			"path": "./packs/merisyl-ancestries.db",
 			"type": "Item"
 		},
 		{
-			"id": "module-items",
+			"name": "module-items",
 			"label": "Merisyl Items",
 			"path": "./packs/merisyl-items.db",
 			"type": "Item"
 		},
 		{
-			"id": "module-creatures",
+			"name": "module-creatures",
 			"label": "Merisyl Creatures",
 			"path": "./packs/merisyl-creatures.db",
 			"type": "Actor"
 		},
 		{
-			"id": "module-continents-verchix",
+			"name": "module-continents-verchix",
 			"label": "Merisyl Continents - Verchix",
 			"path": "./packs/merisyl-continents-verchix.db",
 			"type": "Scene"
 		},
 		{
-			"id": "module-continents-chayle",
+			"name": "module-continents-chayle",
 			"label": "Merisyl Continents - Chayle",
 			"path": "./packs/merisyl-continents-chayle.db",
 			"type": "Scene"
 		},
 		{
-			"id": "module-effect-items",
+			"name": "module-effect-items",
 			"label": "Effect Items",
 			"path": "./packs/effect-items.db",
 			"type": "Item"
 		},
 		{
-			"id": "module-items-deities",
+			"name": "module-items-deities",
 			"label": "Merisyl Deities",
 			"path": "./packs/merisyl-deities.db",
 			"type": "Item"
