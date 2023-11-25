@@ -1,0 +1,39 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#a7a7a7",
+                "fill": "#a7a7a7",
+                "stroke": "#a7a7a7",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "<a href='https://new.merisyl.com/gazette/verchix#cheru' target='_gazette'>Cheru Isle</a>"
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+// Points Here
+                    ]
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "<a href='https://new.merisyl.com/gazette/chayle/notch' target='_gazette'>Notch</a>"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-570.00000,140.00000]
+            }
+        }
+    ]
+}		
