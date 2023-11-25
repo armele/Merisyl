@@ -52,12 +52,8 @@ Here are the steps needed to repurpose this HTML for your own map:
 If you want a walk-through on how to create areas of interest on the map that are highlighted when you mouse-over them and can hyperlink to a detail page, contact me on Discord: [al_mele](https://discordapp.com/channels/@me/al_mele/).  I'm happy to do it, but only if someone will actually read it. :)  It is a bit kludgey now, as it is just used by me.
 
 ## Improvements Not Yet Implemented:
-###Gimp Plugin: 
-The minimum zoom size is dynamically determined based on image size, and you can figure it out by looking at the lowest numbered folder in your tiles directory, but I'd like to output this in a nice way to the user. 
-
-### Hosting / HTML / JavaScript:
-Put tiles in S3
-Error handling for bad GEOJSON
+* Gimp Plugin: The minimum zoom size is dynamically determined based on image size, and you can figure it out by looking at the lowest numbered folder in your tiles directory, but I'd like to output this in a nice way to the user. 
+* In the HTML, create error handling for bad GEOJSON formatting.
 
 ## Credits:
 * Similar guide: https://techtrail.net/creating-an-interactive-map-with-leaflet-js/
