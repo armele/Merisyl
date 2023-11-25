@@ -1,8 +1,9 @@
 # Tiled Game Map Walkthrough
-For detailed, large roleplaying game maps an improved player experience might be achieved by making it available to your players in a "Google-maps" style of zoomable map, allowing them to see the full detail of your map while still having good browsing performance. This walkthrough shares one approach for achieiving this.
+For detailed, large roleplaying game maps an improved player experience might be achieved by making it available to your players in a "Google-maps" style of zoomable map, allowing them to see the full detail of your map while still having good browsing performance. 
 
-This is not an original idea by any means, and what I've done builds on a variety of sources (listed below). 
+An example can be found on the [Merisyl Gazette](https://new.merisyl.com/gazette/), which is an ongoing work in progress for my Pathfinder 2E campaign world.
 
+This walkthrough shares one approach for achieiving this. This is not an original idea by any means, and what I've done builds on a variety of sources (listed below). 
 
 ## Tools Used:
 * [Worldographer](https://worldographer.com/) (map creation): 
