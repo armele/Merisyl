@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html = style="height: 100%;">
+  <head>
+    <title>Merisyl Campaign Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" id="leaflet_js-js"></script>
+	<link rel="stylesheet" id="leaflet_stylesheet-css" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" media="">	
+	<style>
+		path.leaflet-interactive:hover {
+			stroke-opacity: 1;
+			stroke-width: 1;
+			fill-opacity: .2;
+		}	
+	</style>
+  </head>
+  
+  <body style="height: 100%;margin: 0;">
+    <div id="map" style="width: 100%; height: 100%; background: #000000;"></div>
+    <script type="text/javascript">
+		/* Portions adapted from: https://github.com/bozdoz/wp-plugin-leaflet-map/ */
+
+		/* BASIC CUSTOMIZATIONS */
+		var referencesize = 20480;
+		var metersPerPixel = 619.09;
+		var mapLocation = "https://new.merisyl.com/wp-content/uploads/2023/11/tiles/{z}/{x}/{y}.jpeg";
+		var locationsList = [
+			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Aodar.geojson",
+			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Aunea.geojson",
+			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Aurix.geojson",
+			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Buyre.geojson",
+			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Chayle.geojson",
+			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Frostfeld.geojson",
+			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Verchix.geojson"
+		];
+		
+		var useCustomMarkerIcon = true;
+
+		/* ADVANCED CUSTOMIZATIONS */
+		var pixelsPerTile = 256;
+		var factorx = 1;
+		var factory = 1;
+		
+		L.Projection.hex = L.extend({}, L.Projection.LongLat, {
+			project: function (latlng) {
+				return L.point(latlng.lng / pixelsPerTile, latlng.lat / pixelsPerTile);
+			},
+
+			unproject: function (point) {
+			
+				return new L.latLng(point.y * pixelsPerTile, point.x * pixelsPerTile);
+			},
+
+			bounds: L.bounds([-180, -90], [180, 90])			
+		});
+	
+		L.CRS.pr = L.extend({}, L.CRS.Simple, {
+		  projection: L.Projection.hex,
+		  transformation: new L.Transformation(factorx, (referencesize / pixelsPerTile) / 2, -factory, (referencesize / pixelsPerTile) / 2),
+
+		  scale: function(zoom) {
+			return Math.pow(2, zoom);
+		  },
+
+		  zoom: function(scale) {
+			return Math.log(scale) / Math.LN2;
+		  },
+
+		  distance: function(latlng1, latlng2) {
+			var dx = (latlng2.lng - latlng1.lng) * metersPerPixel,
+			  dy = (latlng2.lat - latlng1.lat) * metersPerPixel;
+
+			return Math.sqrt(dx * dx + dy * dy);
+		  },
+		  infinite: true
+		});
+  
+	//Creating the Map
+    var map = L.map('map',{crs: L.CRS.pr}).setView([-38, 35], 4);
+	
+	var mapBounds = new L.LatLngBounds(
+	map.unproject([0, referencesize], 8),
+	map.unproject([referencesize, 0], 8));
+	map.setMaxBounds(mapBounds);
+
+	var mapCenter = map.unproject([referencesize/2, referencesize/2], 8);
+	
+    L.tileLayer.wms(mapLocation, {
+      continuousWorld: false,
+	  bounds: mapBounds,
+      noWrap: true,  
+      minZoom: 4,
+      maxZoom: 8,
+	  crs: L.CRS.Simple
+    }).addTo(map);	
+	
+	L.control.scale({metric: true, maxWidth: 256}).addTo(map);	
+	initAjaxGeoJSON();
+	
+	for (var geoData in locationsList) {
+		console.log("Loading: " + locationsList[geoData]);
+		loadGeoJSON(locationsList[geoData]);
+	}
+	
+	function layerStyle (feature) {
+		var default_style = {
+			"color" : "#eaeaea",
+			"weight" : ".3",
+			"opacity" : "0.0",
+			"fillColor" : "#eaeaea",
+			"fillOpacity" : "0.0"
+		};
+		var rewrite_keys = {
+			'stroke' : 'color',
+			'stroke-width' : 'weight',
+			'stroke-opacity' : 'opacity',
+			'fill' : 'fillColor',
+			'fill-opacity' : 'fillOpacity',
+		};	
+		var props = feature.properties || {};
+		var style = {};
+		function camelFun (_, first_letter) {
+			return first_letter.toUpperCase();
+		};
+		for (var key in props) {
+			if (key.match('-')) {
+				var camelcase = key.replace(/-(\w)/, camelFun);
+				style[ camelcase ] = props[ key ];
+			}
+			// rewrite style keys from geojson.io
+			if (rewrite_keys[ key ]) {
+				style[ rewrite_keys[ key ] ] = props[ key ];
+			}
+		}
+		return L.Util.extend(style, default_style);
+	}
+	
+	function onEachFeature (feature, layer) {
+		var props = feature.properties || {};
+		var text = props["popup-text"] || "";
+		if (text) {
+			layer.bindPopup( text );
+		}
+	}
+	
+	function pointToLayer (feature, latlng) {
+		var markerOptions = {};			// See https://leafletjs.com/reference.html#marker for options
+		
+		var cityIcon = L.icon({
+			iconUrl: 'https://pathfinder-gm-tools.s3.amazonaws.com/map/castleMarker.png',
+			shadowUrl: 'https://pathfinder-gm-tools.s3.amazonaws.com/map/castleMarkerShadow.png',
+
+			iconSize:     [24, 50], 	// size of the icon
+			shadowSize:   [30, 25], 	// size of the shadow
+			iconAnchor:   [12, 50], 	// point of the icon which will correspond to marker's location
+			shadowAnchor: [10, 25],  	// the same for the shadow
+			popupAnchor:  [0, -30] 	// point from which the popup should open relative to the iconAnchor
+		});		
+
+		if (useCustomMarkerIcon) {
+			markerOptions["icon"] = cityIcon;   
+		}
+		
+		return L.marker(latlng, markerOptions);
+	}	
+		
+		
+	function loadGeoJSON(targetfile) {
+		var layer = L.ajaxGeoJson(targetfile, {
+			style : layerStyle,
+			onEachFeature : onEachFeature,
+			pointToLayer: pointToLayer
+		});	
+		
+		layer.addTo(map);
+	}
+	
+	function initAjaxGeoJSON() {
+		L.AjaxGeoJSON = L.GeoJSON.extend({
+		  options: {
+			type: 'json', // 'json|kml|gpx'
+		  },
+
+		  initialize: function (url, options) {
+			L.setOptions(this, options);
+			this._url = url;
+			this.layer = L.geoJson(null, this.options);
+		  },
+
+		  onAdd: function (map) {
+			var _this = this;
+			var type = this.options.type;
+			var xhr;
+
+			this.map = map;
+
+			map.addLayer(this.layer);
+
+			if (!this.request) {
+			  this.request = xhr = new XMLHttpRequest();
+
+			  xhr.onreadystatechange = function () {
+				var data;
+				if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+				  if (type === 'json') {
+					data = JSON.parse(xhr.responseText);
+				  } else if (['kml', 'gpx'].indexOf(type) !== -1) {
+					data = window.toGeoJSON[type](xhr.responseXML);
+				  }
+				  _this.json = data;
+				  _this.layer.addData(data);
+				  _this.fire('ready');
+				}
+			  };
+
+			  xhr.open('get', this._url, true);
+
+			  xhr.send();
+			}
+			this.fire('add');
+		  },
+
+		  eachLayer: function (fnc) {
+			this.layer.eachLayer(fnc);
+		  },
+
+		  setStyle: function (style) {
+			this.layer.setStyle(style);
+		  },
+
+		  resetStyle: function (layer) {
+			this.layer.resetStyle(layer);
+		  },
+
+		  onRemove: function (map) {
+			this.map.removeLayer(this.layer);
+		  },
+
+		  getBounds: function () {
+			return this.layer.getBounds();
+		  },
+		});
+
+		L.ajaxGeoJson = function (url, options) {
+		  return new L.AjaxGeoJSON(url, options);
+		};
+	}	
+	
+	/* Unused
+	function loadGeoJSON(targetfile) {
+        if (targetfile) {
+          var xhr = new XMLHttpRequest();
+
+          xhr.onreadystatechange = function () {
+            var data;
+            if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+              data = JSON.parse(xhr.responseText);
+			  console.log(data);
+			  L.geoJSON(data).addTo(map);	
+            }
+          };
+
+          xhr.open('get', targetfile, true);
+
+          xhr.send();
+        }	
+	}
+	*/
+  //Markers
+    </script>
+  </body>
+</html>
