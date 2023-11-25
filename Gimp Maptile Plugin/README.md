@@ -36,7 +36,7 @@ You will be prompted for:
 This task may take quite a while, depending on your map size and system capabilities. At the end of this process in your target directory you will have a series of subfolders with the scaled tiles to be used for each zoom level. You will also have the **tilebase image** - a version of your source image that has been centered in a square with sides divisible by 256.
 
 ### Configure an HTML Page
-Knowing that I wanted to host this on a Wordpress site, I first investigated the Wordpress Leaflet Map plugin (https://wordpress.org/plugins/leaflet-map/).  It is an excellent plugin, but designed for real-world scenarios, and ultimately did not give me exactly what I wanted.  I ended up coding the Leaflet JavaScript directly.  The following explanation is based on this file (which you're welcome to use as the basis for your own customization): https://pathfinder-gm-tools.s3.amazonaws.com/map/merisylMap.html
+Knowing that I wanted to host this on a Wordpress site, I first investigated the Wordpress Leaflet Map plugin (https://wordpress.org/plugins/leaflet-map/).  It is an excellent plugin, but designed for real-world scenarios, and ultimately did not give me exactly what I wanted.  I ended up coding the Leaflet JavaScript directly.  The following explanation is based on the [merisylMap.html](https://github.com/armele/Merisyl/blob/master/Gimp%20Maptile%20Plugin/merisylMap.html) (which you're welcome to use as the basis for your own customization).
 
 My criteria were that the map was served up using tiles, that the scale was correct for the map, and that the latitude and longitude markers corresponded to the pixels of the underlying map.
 
