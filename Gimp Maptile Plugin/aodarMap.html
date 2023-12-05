@@ -20,17 +20,11 @@
 		/* Portions adapted from: https://github.com/bozdoz/wp-plugin-leaflet-map/ */
 
 		/* BASIC CUSTOMIZATIONS */
-		var referencesize = 20480;
-		var metersPerPixel = 619.09;
-		var mapLocation = "https://pathfinder-gm-tools.s3.amazonaws.com/map/worldtiles/{z}/{x}/{y}.jpg"; // "https://new.merisyl.com/wp-content/uploads/2023/11/tiles/{z}/{x}/{y}.jpeg";
+		var referencesize = ;
+		var metersPerPixel = .0468;  // Based on 345 pixel hex ~ 16 meters
+		var mapLocation = "https://pathfinder-gm-tools.s3.amazonaws.com/map/aodartiles/{z}/{x}/{y}.jpg"; // "https://new.merisyl.com/wp-content/uploads/2023/11/tiles/{z}/{x}/{y}.jpeg";
 		var locationsList = [
-			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Aodar.geojson",
-			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Aunea.geojson",
-			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Aurix.geojson",
-			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Buyre.geojson",
-			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Chayle.geojson",
-			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Frostfeld.geojson",
-			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Verchix.geojson"
+
 		];
 		
 		var useCustomMarkerIcon = true;
@@ -75,7 +69,7 @@
 		});
   
 	//Creating the Map
-    var map = L.map('map',{crs: L.CRS.pr}).setView([-38, 35], 4);
+    var map = L.map('map',{crs: L.CRS.pr}).setView([-38, 35], 6);
 	
 	var mapBounds = new L.LatLngBounds(
 	map.unproject([0, referencesize], 8),
@@ -93,7 +87,7 @@
 	  crs: L.CRS.Simple
     }).addTo(map);	
 	
-	L.control.scale({metric: true, maxWidth: 256}).addTo(map);	
+	L.control.scale({metric: true, maxWidth: 130}).addTo(map);	
 	initAjaxGeoJSON();
 	
 	for (var geoData in locationsList) {
