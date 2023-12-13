@@ -56,6 +56,10 @@ Here are the steps needed to repurpose this HTML for your own map:
 * Update "mapLocation" to where your tile folders were created. I am hosting mine in Wordpress, but intend to move them to Amazon S3. If you are using this map locally only, this can be a drive location with a path relative to the location of the .HTML file.
 * Comment out (or replace) the contents of locatonsList. These are entries of points of interest, using the [GEOJSON](https://geojson.org/) format supported by Leaflet.
 
+### Referencing the HTML From Wordpress
+Install the "Simple IFrame" WordPress plugin.
+On the WordPress page you'd like to display the map, insert the page element for the Simple IFrame.
+Set the "IFRAME URL" configuration setting to the location of your HTML file.  (I'm using S3.)
 
 ### Making Mouseovers:
 If you want a walk-through on how to create areas of interest on the map that are highlighted when you mouse-over them and can hyperlink to a detail page, contact me on Discord: [al_mele](https://discordapp.com/channels/@me/al_mele/).  I'm happy to do it, but only if someone will actually read it. :)  It is a bit kludgey now, as it is just used by me.
