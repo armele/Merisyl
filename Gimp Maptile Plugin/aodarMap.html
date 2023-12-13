@@ -21,7 +21,7 @@
 
 		/* BASIC CUSTOMIZATIONS */
 		var referencesize = ;
-		var metersPerPixel = .0468;  // Based on 345 pixel hex ~ 16 meters
+		var metersPerPixel = .0597;  // Based on 268 pixel hex ~ 16 meters
 		var mapLocation = "https://pathfinder-gm-tools.s3.amazonaws.com/map/aodartiles/{z}/{x}/{y}.jpg"; // "https://new.merisyl.com/wp-content/uploads/2023/11/tiles/{z}/{x}/{y}.jpeg";
 		var locationsList = [
 
@@ -82,7 +82,7 @@
       continuousWorld: false,
 	  bounds: mapBounds,
       noWrap: true,  
-      minZoom: 4,
+      minZoom: 2,
       maxZoom: 8,
 	  crs: L.CRS.Simple
     }).addTo(map);	

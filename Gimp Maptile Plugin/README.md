@@ -32,11 +32,17 @@ Open your map image in Gimp, and from the menu choose **Filters->Tilemaker->Make
 You will be prompted for:
 * A folder into which the tiled images will be placed ("target folder").  For performance reasons, I suggest a local directory as opposed to a network drive. They may be copied later to somewhere internet-accessible for use in step 3.
 * The maximum zoom level for the map. 
-* The number of threads to dedicate to this task. You will want to experiement with what your system is capable of supporting.
+* The number of threads to dedicate to this task. You will want to experiement with what your system is capable of supporting. Counterintuitively, the higher the thread count the less frequently the progress will update, and the more likely you are to think something is "stuck".  Four to six seems a decent balance.
+* Whether or not you want to skip checking existing tiles for changes (useful for restarting an interrupted job where you know nothing has changed since the last run). If you know you have updated the image file you're tiling, pick "no". Each tile will have its hash compared, and only tiles in the image which have changed will be regenerated.
 
 This task may take quite a while, depending on your map size and system capabilities. At the end of this process in your target directory you will have a series of subfolders with the scaled tiles to be used for each zoom level. You will also have the **tilebase image** - a version of your source image that has been centered in a square with sides divisible by 256.
 
-If the process is interrupted it can be restarted without using progress, assuming you use the same target directory and do not remove the tiles already created.
+If the process is interrupted it can be restarted without losing progress, assuming you use the same target directory and do not remove the tiles already created. A file called "config.json" will be created in the selected output directory, and this records information that allows the restart to be more efficient. It can be a useful way to see the detail of how the tiling is progressing.
+
+If you are generating tiles into an existing directory, the plugin is smart enough to compare the existing image to the new one, and overwrite the tile only when necessary.  This means after the initial map creation, updates can be done reasonably quickly.
+
+You may want to copy these into an s3 bucket for use. One way to do this (with the AWS CLI installed) could be, from "target folder":
+* aws s3 sync . s3_destination_bucket
 
 ### Configure an HTML Page
 Knowing that I wanted to host this on a Wordpress site, I first investigated the Wordpress Leaflet Map plugin (https://wordpress.org/plugins/leaflet-map/).  It is an excellent plugin, but designed for real-world scenarios, and ultimately did not give me exactly what I wanted.  I ended up coding the Leaflet JavaScript directly.  The following explanation is based on the [merisylMap.html](https://github.com/armele/Merisyl/blob/master/Gimp%20Maptile%20Plugin/merisylMap.html) (which you're welcome to use as the basis for your own customization).
@@ -55,8 +61,8 @@ Here are the steps needed to repurpose this HTML for your own map:
 If you want a walk-through on how to create areas of interest on the map that are highlighted when you mouse-over them and can hyperlink to a detail page, contact me on Discord: [al_mele](https://discordapp.com/channels/@me/al_mele/).  I'm happy to do it, but only if someone will actually read it. :)  It is a bit kludgey now, as it is just used by me.
 
 ## Improvements Not Yet Implemented:
-* Gimp Plugin: The minimum zoom size is dynamically determined based on image size, and you can figure it out by looking at the lowest numbered folder in your tiles directory, but I'd like to output this in a nice way to the user. 
 * In the HTML, create error handling for bad GEOJSON formatting.
+* In the GIMP plugin, allow an "optimistic" option, which allows for the assumption that the filesystem and the config.json match, and no additional checks for presence of tiles needs to be undertaken.
 
 ## Credits:
 * Similar guide: https://techtrail.net/creating-an-interactive-map-with-leaflet-js/
