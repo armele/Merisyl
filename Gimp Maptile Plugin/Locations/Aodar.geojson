@@ -4,6 +4,21 @@
         {
             "type": "Feature",
             "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "<a href='https://new.merisyl.com/gazette/chayle/aodar-free-city' target='_gazette'>Aodar, Free City of</a>"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-340.00000,4380.00000]
+            }
+        },	
+        {
+            "type": "Feature",
+            "properties": {
                 "marker-color": "#a7a7a7",
                 "fill": "#a7a7a7",
                 "stroke": "#a7a7a7",

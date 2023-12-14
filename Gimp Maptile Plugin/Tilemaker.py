@@ -13,9 +13,10 @@ from gimpfu import *
 # Tested against GIMP 2.10.32 (revision 1)
 # Test scenarios:
 #   New map from scratch (empty target)
-#   Regenerate with modifications
-#   Regenerate with missing files.
-#   Regenerate with files that exist and are not reflected in MD5 map.
+#   Regenerate with missing files using "skip existing tiles" = Yes (Missing file should be replaced quickly.)
+#   Regenerate with missing files using "skip existing tiles" = No (Missing file should be replaced slowly.)
+#   Regenerate with modifications using "skip existing tiles" = Yes (Changes will be ignored - all tiles skipped.)
+#   Regenerate with modifications using "skip existing tiles" = No (Changed tiles will be replaced.)
 
 BOX = 256
 ZOOM_DEFAULT = 8
@@ -90,6 +91,11 @@ class Tile:
         tileResult["key"] = self.uniqueKey()  
         tileResult["filename"] = self.get_output_path()
         
+        # If we're rerunning an interrupted job, and the file exists with a configuration record do no work here.
+        if self.skipexisting and tileResult["filename"] in self.existingFiles and self.uniqueKey() in self.previousConfigData.get("files",{}):
+            tileResult = self.previousConfigData["files"][self.uniqueKey()]
+            return tileResult
+            
         writefile = True
         
         # gimp.message('Creating a tile...')
@@ -101,15 +107,15 @@ class Tile:
         if not pdb.gimp_drawable_is_indexed(new_image.active_layer):
             pdb.gimp_image_convert_indexed(new_image, 1, 0, 256, False, False, "")
         
-        # Register the md5 of the image for rerunnability 
+        # Register the md5 of the image for rerunnability (allows a pixel comparison from old image to new)
         tileResult["md5"] = self.md5_of_image(new_image)
         
-        # If we are not checking the existing tile for changes, just set the previous MD5 to the current one.
-        if self.skipexisting and tileResult["filename"] in self.existingFiles:
-            prevMD5 = tileResult["md5"]
-        else:
+        # If the file exists we can use the MD5 from the previous configuration.
+        if tileResult["filename"] in self.existingFiles:
             prevMD5 = self.getPreviousMD5(self.uniqueKey())
-        
+        else:
+            prevMD5 = "None"
+            
         # We have a MD5 configured, and the file exists.
         if tileResult["md5"] == prevMD5:
             writefile = False
@@ -289,7 +295,14 @@ def prepare_image(image, layer, dimension):
         
     pdb.gimp_progress_set_text("Scaling source image.")
     pdb.gimp_image_scale(image, new_width, new_height)
-    # pdb.gimp_image_crop(image, dimension, dimension, 0, 0)
+
+    pdb.gimp_image_resize(image, dimension, dimension, (dimension - image.width) / 2, (dimension - image.height) / 2) #Make it square and center 
+    pdb.gimp_layer_resize_to_image_size(image.active_layer)
+    
+    # Put a white layer behind the resized map, as transparencies don't save well in an indexed PNG
+    pdb.gimp_context_set_foreground("white")
+    image.new_layer(pos=1, fill_mode = FOREGROUND_FILL)
+    pdb.gimp_image_merge_visible_layers(image, CLIP_TO_IMAGE)
 
 def initializeConfig():
     # Initialize a new set of config data.
@@ -305,6 +318,8 @@ def initializeConfig():
     return data
 
 def loadPreviousConfig(output_dir):
+    data = {}
+        
     if os.path.exists(os.path.join(output_dir, configFile)):
          
         # Reading config file, if it exists
@@ -318,8 +333,8 @@ def loadPreviousConfig(output_dir):
             for tiledata in data["files"]:
                 # gimp.message(json.dumps(tiledata))
                 data["files"][tiledata]["status"] = "To Verify"
-
-        return data
+    
+    return data
     
 def saveConfigData(output_dir, data):
     # Serializing json
@@ -382,10 +397,8 @@ def leaflet_tile(image, layer, output_dir, zoom_level, numthreads, skipexisting)
         
     # Scale the image to a square image in multiples of 256, and save out a copy of this inital starting image (full map size) for point mapping purposes.
     dimension = calc_dimension(zoom_level, temp_img)
-     
+    configData["referencesize"] = dimension
     prepare_image(temp_img, layer, dimension)
-    pdb.gimp_image_resize(temp_img, dimension, dimension, (dimension - temp_img.width) / 2, (dimension - temp_img.height) / 2) #Make it square and center
-    pdb.gimp_layer_resize_to_image_size(temp_img.active_layer)
     
     output_path = safe_output_path(image, "template_", output_dir)
     # pdb.file_jpeg_save(temp_img, temp_img.active_layer, output_path, output_path, 0.9, 0, 0, 0,'Creating with GIMP', 0, 0, 0, 0) 
@@ -500,7 +513,7 @@ register(
         (PF_DIRNAME, 'output_dir', 'Output directory', 'C:\\temp\\tiles'),
         (PF_SPINNER, 'zoom_level', 'Zoom level', ZOOM_DEFAULT, ZOOM_OPTIONS),
         (PF_SPINNER, 'numthreads', 'Thread pool size', THREADPOOL, THREAD_OPTIONS),
-        (PF_TOGGLE, "skipexisting", "Skip Existing Tiles", True)
+        (PF_TOGGLE, "skipexisting", "Skip Existing Tiles", True)       
     ],
     [],
     leaflet_tile,

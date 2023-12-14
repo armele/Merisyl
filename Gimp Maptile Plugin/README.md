@@ -37,7 +37,7 @@ You will be prompted for:
 
 This task may take quite a while, depending on your map size and system capabilities. At the end of this process in your target directory you will have a series of subfolders with the scaled tiles to be used for each zoom level. You will also have the **tilebase image** - a version of your source image that has been centered in a square with sides divisible by 256.
 
-If the process is interrupted it can be restarted without losing progress, assuming you use the same target directory and do not remove the tiles already created. A file called "config.json" will be created in the selected output directory, and this records information that allows the restart to be more efficient. It can be a useful way to see the detail of how the tiling is progressing.
+If the process is interrupted it can be restarted without losing progress, assuming you use the same target directory and do not remove the tiles already created. A file called "config.json" will be created in the selected output directory, and this records information that allows the restart to be more efficient. It can be a useful way to see the detail of how the tiling is progressing. I recommend you keep this file with your tile directory structure for speed of future updates.
 
 If you are generating tiles into an existing directory, the plugin is smart enough to compare the existing image to the new one, and overwrite the tile only when necessary.  This means after the initial map creation, updates can be done reasonably quickly.
 
@@ -66,7 +66,6 @@ If you want a walk-through on how to create areas of interest on the map that ar
 
 ## Improvements Not Yet Implemented:
 * In the HTML, create error handling for bad GEOJSON formatting.
-* In the GIMP plugin, allow an "optimistic" option, which allows for the assumption that the filesystem and the config.json match, and no additional checks for presence of tiles needs to be undertaken.
 
 ## Credits:
 * Similar guide: https://techtrail.net/creating-an-interactive-map-with-leaflet-js/
