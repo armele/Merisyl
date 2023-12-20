@@ -33,7 +33,7 @@ You will be prompted for:
 * A folder into which the tiled images will be placed ("target folder").  For performance reasons, I suggest a local directory as opposed to a network drive. They may be copied later to somewhere internet-accessible for use in step 3.
 * The maximum zoom level for the map. 
 * The number of threads to dedicate to this task. You will want to experiement with what your system is capable of supporting. Counterintuitively, the higher the thread count the less frequently the progress will update, and the more likely you are to think something is "stuck".  Four to six seems a decent balance.
-* Whether or not you want to skip checking existing tiles for changes (useful for restarting an interrupted job where you know nothing has changed since the last run). If you know you have updated the image file you're tiling, pick "no". Each tile will have its hash compared, and only tiles in the image which have changed will be regenerated.
+* Whether or not you want to skip checking existing tiles for changes (useful for restarting an interrupted job where you know nothing has changed since the last run). If you know you have updated the image file you're tiling, pick "no". Each tile will have its hash compared, and only tiles in the image which have changed will be regenerated. If you know nothing has changed and you just want to restart an interrupted job, pick "yes".
 
 This task may take quite a while, depending on your map size and system capabilities. At the end of this process in your target directory you will have a series of subfolders with the scaled tiles to be used for each zoom level. You will also have the **tilebase image** - a version of your source image that has been centered in a square with sides divisible by 256.
 

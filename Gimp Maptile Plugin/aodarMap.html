@@ -20,8 +20,8 @@
 		/* Portions adapted from: https://github.com/bozdoz/wp-plugin-leaflet-map/ */
 
 		/* BASIC CUSTOMIZATIONS */
-		var referencesize = 49152;
-		var metersPerPixel = .0597;  // Based on 268 pixel hex ~ 16 meters
+		var referencesize = 57344;
+		var metersPerPixel = .0717;  // Based on 257*223 pixel hex ~ 16 meters
 		var mapLocation = "https://pathfinder-gm-tools.s3.amazonaws.com/map/aodartiles/{z}/{x}/{y}.png"; // "https://new.merisyl.com/wp-content/uploads/2023/11/tiles/{z}/{x}/{y}.jpeg";
 		var locationsList = [
 			
@@ -82,7 +82,7 @@
       continuousWorld: false,
 	  bounds: mapBounds,
       noWrap: true,  
-      minZoom: 2,
+      minZoom: 3,
       maxZoom: 8,
 	  format: 'image/png',
 	  transparent: true,	  

@@ -94,6 +94,7 @@ class Tile:
         # If we're rerunning an interrupted job, and the file exists with a configuration record do no work here.
         if self.skipexisting and tileResult["filename"] in self.existingFiles and self.uniqueKey() in self.previousConfigData.get("files",{}):
             tileResult = self.previousConfigData["files"][self.uniqueKey()]
+            tileResult["status"] = "Skipped"
             return tileResult
             
         writefile = True
@@ -121,19 +122,8 @@ class Tile:
             writefile = False
             # tileResult["debug"] = "Matched previous md5"
         else:
-            # MD5s don't match, or we don't have an MD5 registered, but the file exists.
-            if tileResult["filename"] in self.existingFiles:
-                # existing_image = pdb.file_jpeg_load(tileResult["filename"], tileResult["filename"])
-                existing_image = pdb.file_png_load(tileResult["filename"], tileResult["filename"])
-                existingmd5 = self.md5_of_image(existing_image)
-                
-                if tileResult["md5"] == existingmd5:
-                    writefile = False
-                    # tileResult["debug"] = "Matched unregistered md5 of existing file."
-                else:
-                    writefile = True
-                    # tileResult["debug"] = "No match with unregistered md5 of existing file."
-                
+            writefile = True
+                    
         if writefile:
             # pdb.file_jpeg_save(new_image, new_image.active_layer, tileResult["filename"], tileResult["filename"], 1.0, 0, 0, 0,'Creating with GIMP', 0, 0, 0, 0)
             pdb.file_png_save(new_image, new_image.active_layer, tileResult["filename"], tileResult["filename"], 0, 0, 0, 0, 0, 0, 0)
@@ -183,7 +173,7 @@ class WorkQueue:
                 workitem.status = status
                 gimp.message("Error in tile creation: " + str(e))
                 tileResult = {}
-                tileResult[workitem.uniqueKey] = str(e)
+                tileResult["key"] = workitem.uniqueKey()
                 tileResult["error"] = str(e)
                 tileResult["queueNumber"] = self.queueNumber
                 self.communicationQueue.put(tileResult)                
@@ -429,7 +419,7 @@ def leaflet_tile(image, layer, output_dir, zoom_level, numthreads, skipexisting)
         pdb.gimp_progress_update(float(z)/float(zoom_level)) 
         
     configData["minzoom"] = min_zoom
-    
+    pdb.gimp_image_delete(temp_img)
     
     thumbnail = zoomImageMap[min_zoom]
     output_path = safe_output_path(thumbnail, "thumbnail_", output_dir)
@@ -497,6 +487,11 @@ def leaflet_tile(image, layer, output_dir, zoom_level, numthreads, skipexisting)
     
     pdb.gimp_progress_set_text('Tiling Complete!')
     saveConfigData(output_dir, configData)
+
+    # Clean up memory.
+    for z in xrange(zoom_level, -1, -1):
+        if z in zoomImageMap:
+            pdb.gimp_image_delete(zoomImageMap[z])
 
 register(
     'Tilemaker',
