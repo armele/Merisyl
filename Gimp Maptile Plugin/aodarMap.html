@@ -417,7 +417,7 @@
 	
 		console.log("isInIframe: " + isInIframe + ", Location search: " + referenceSearch + "; params: " + urlParams);	
 		
-		return urlParams.get(key);
+		return urlParams.get(key) || 0;
 	} 
 	
     </script>
