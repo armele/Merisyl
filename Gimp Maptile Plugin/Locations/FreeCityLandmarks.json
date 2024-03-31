@@ -1,0 +1,719 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Fountain of the Six Shrines",
+				"marker-group": "Landmark",
+				"ID": "1"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-3004.00000,-2876.00000]
+            }
+		},
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Docks",
+				"marker-group": "Commercial",
+				"ID": "24"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-1130.00000,-12796.00000]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Little Market",
+				"marker-group": "Commercial",
+				"ID": "3"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-9754.00000,-7458.00000]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Peddlers' Palliate",
+				"marker-group": "Inns and Taverns",
+				"ID": "4"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-684, -11224]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Debberoth Mercantile Foundation",
+				"marker-group": "Consortium",
+				"ID": "10"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-1588, -11400]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Eilendere Trade Consortium Tradehouse",
+				"marker-group": "Consortium",
+				"ID": "11"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-3718,-3760]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Monument to Priestess Ziernia",
+				"marker-group": "Landmark",
+				"ID": "12"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [3020,-10090]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Trade Plaza",
+				"marker-group": "Commercial",
+				"ID": "2"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-5004,-6892]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Golden Dawn Park",
+				"marker-group": "Park",
+				"ID": "6"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [13184,-4464]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Plaza of the Setting Sun",
+				"marker-group": "Landmark",
+				"ID": "13"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-15184,3472]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Athear of Justice",
+				"marker-group": "Religious",
+				"ID": "13"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-2990,-6502]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Galtiere's Cheese Factory",
+				"marker-group": "Commercial",
+				"ID": "14a"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [12710,7332]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Cheese Hut",
+				"marker-group": "Commercial",
+				"ID": "14b"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [12860,7490]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Fallen Treasures",
+				"marker-group": "Commercial",
+				"ID": "15"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [4963,11781]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Draconic Goods Exchange",
+				"marker-group": "Consortium",
+				"ID": "16"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-593,-10688]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Wick It",
+				"marker-group": "Commercial",
+				"ID": "17"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-10416,5061]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Press and Play",
+				"marker-group": "Commercial",
+				"ID": "18"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [10880,6020]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "The Peak",
+				"marker-group": "Inns and Taverns",
+				"ID": "19"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-9776,4616]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Bread Basket",
+				"marker-group": "Commercial",
+				"ID": "20"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-3944,6444]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Kerowyn's Money Exchange",
+				"marker-group": "Commercial",
+				"ID": "22"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-8969,-3260]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Medelain Hall",
+				"marker-group": "Inns and Taverns",
+				"ID": "23"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [5656,-2988]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Terkvajkiz",
+				"marker-group": "Residence",
+				"ID": "24"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [8824,-9888]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Trinja Whiteice",
+				"marker-group": "Residence",
+				"ID": "21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [936,2656]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Alendys' Glade",
+				"marker-group": "Park",
+				"ID": "26"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-1340,9896]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Endless Festival",
+				"marker-group": "Entertainment",
+				"ID": "27"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-3944,4572]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Athear of the Brass",
+				"marker-group": "Religious",
+				"ID": "46"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-2896,5388]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "City Council Complex",
+				"marker-group": "Government",
+				"ID": "29"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-2288,-11592]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Tann's Tattoos",
+				"marker-group": "Commercial",
+				"ID": "30"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-6644,1244]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Athear of the Hopeful Dawn",
+				"marker-group": "Religious",
+				"ID": "31"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [13062,2792]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Beacon of Lev Venix",
+				"marker-group": "Landmark",
+				"ID": "5"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-5297,-15230]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Scarlet Dusk Park",
+				"marker-group": "Park",
+				"ID": "9"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-6408,10420]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Celestial Park",
+				"marker-group": "Park",
+				"ID": "28"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-8520,-6736]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Wind Rider",
+				"marker-group": "Commercial",
+				"ID": "32"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-4785,-10604]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Lady Rousch's Apothocarium",
+				"marker-group": "Commercial",
+				"ID": "33"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [5910,-5364]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Flowers of the Island Trail",
+				"marker-group": "Consortium",
+				"ID": "34"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [8092,-12340]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Scales of Trade",
+				"marker-group": "Consortium",
+				"ID": "35"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [4072,-11848]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Exotic Merchandise Combine",
+				"marker-group": "Consortium",
+				"ID": "36"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [8553,-11097]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Fenland Trade Association",
+				"marker-group": "Consortium",
+				"ID": "37"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [16461,7990]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Arcanea",
+				"marker-group": "Consortium",
+				"ID": "38"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [4752,4398]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Magisterium",
+				"marker-group": "Government",
+				"ID": "39"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-14904,-6852]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Assassin's Guild",
+				"marker-group": "Guild",
+				"ID": "40"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [10458,2030]
+            }			
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "marker-color": "#7e7e7e",
+                "fill": "#7e7e7e",
+                "stroke": "#555555",
+                "marker-size": "medium",
+                "marker-symbol": "",
+                "popup-text": "Mercenary Guild",
+				"marker-group": "Guild",
+				"ID": "41"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [2447,1074]
+            }			
+        }
+	]
+}

@@ -25,6 +25,8 @@ Export the map to any supported image format.  Note that the tiling step require
 
 There are a variety of tiling solutions out there, but I wanted one specifically that I could use from Gimp, so that I wouldn't have to pay for Photoshop or learn another image editing tool. I ended up rewriting a Gimp plugin I found to improve performance.  This is available here: https://github.com/armele/Merisyl/blob/master/Gimp%20Maptile%20Plugin/Tilemaker.py
 
+Note that I have not overcome Python threading limitations within Gimp, so for large files the plugin will apear stuck (no GUI updates) for a significant amount of time, but if you look at the output folders you'll see your tiles happily being produced.
+
 Install it to Gimp by copying the Tilemaker.py file to your gimp plug-ins directory (for example "C:\Program Files\GIMP 2\lib\gimp\2.0\plug-ins").  
 
 Open your map image in Gimp, and from the menu choose **Filters->Tilemaker->Make Map Tiles**.

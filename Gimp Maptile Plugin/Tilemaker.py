@@ -32,14 +32,14 @@ lock = threading.Lock()
 
 class Tile:
     
-    def __init__(self, x, y, z, image, output_dir, existingFiles, previousConfigData, skipexisting):      
+    def __init__(self, x, y, z, image, output_dir, existingFiles, previousConfigData, resumeinterrupted):      
         self.x = x
         self.y = y
         self.z = z
         self.image = image
         self.status = "Not Done"
         self.output_dir = output_dir
-        self.skipexisting = skipexisting
+        self.resumeinterrupted = resumeinterrupted
         self.existingFiles = existingFiles
         self.previousConfigData = previousConfigData
 
@@ -92,7 +92,7 @@ class Tile:
         tileResult["filename"] = self.get_output_path()
         
         # If we're rerunning an interrupted job, and the file exists with a configuration record do no work here.
-        if self.skipexisting and tileResult["filename"] in self.existingFiles and self.uniqueKey() in self.previousConfigData.get("files",{}):
+        if self.resumeinterrupted and tileResult["filename"] in self.existingFiles and self.uniqueKey() in self.previousConfigData.get("files",{}):
             tileResult = self.previousConfigData["files"][self.uniqueKey()]
             tileResult["status"] = "Skipped"
             return tileResult
@@ -167,7 +167,7 @@ class WorkQueue:
                 tileResult = workitem.create_tile() 
                 tileResult["queueNumber"] = self.queueNumber
                 self.communicationQueue.put(tileResult)
-                time.sleep(.2) # Brief pause to allow main thread to receive updates.
+                time.sleep(0.0001) # Brief pause to allow main thread to receive updates.
             except Exception as e:
                 status = "Error"
                 workitem.status = status
@@ -346,9 +346,11 @@ def list_files_recursive(directory):
     return file_paths
 
 def inventoryExistingFiles(output_dir):
-    gimp.progress_init("Inventorying existing files.")  
+    pdb.gimp_progress_init("Inventorying existing files.")  
     
     existingFiles = list_files_recursive(output_dir)
+    
+    pdb.gimp_progress_end()
     
     return existingFiles
     # Approach below is quite slow.
@@ -356,7 +358,7 @@ def inventoryExistingFiles(output_dir):
     #    for file in files:
     #        existingFiles[os.path.join(root, file)] = True     
 
-def leaflet_tile(image, layer, output_dir, zoom_level, numthreads, skipexisting):
+def leaflet_tile(image, layer, output_dir, zoom_level, numthreads, resumeinterrupted):
     """
     Tiles the image for use in Leaflet maps.
 
@@ -377,7 +379,7 @@ def leaflet_tile(image, layer, output_dir, zoom_level, numthreads, skipexisting)
     # configData["previousConfigData"] = previousConfigData
     
     # Ensure we are not maniuplating the source image - just a copy of it.    
-    gimp.progress_init("Preparing source image.") 
+    pdb.gimp_progress_init("Preparing source image.") 
     temp_img = image.duplicate()
     temp_img.disable_undo()
 
@@ -403,9 +405,10 @@ def leaflet_tile(image, layer, output_dir, zoom_level, numthreads, skipexisting)
     
     # prepare_initial_image(temp_img, dimension, output_dir)
     scaledDimension = dimension
+    pdb.gimp_progress_end()
     
     # Scale a source image for each zoom level.
-    gimp.progress_init("Preparing zoom masters.") 
+    pdb.gimp_progress_init("Preparing zoom masters.") 
     for z in xrange(zoom_level, -1, -1):
         # The min zoom is the point at which the map size is no longer evenly divisible into BOX-sized chunks.
         if scaledDimension % BOX == 0:
@@ -417,7 +420,8 @@ def leaflet_tile(image, layer, output_dir, zoom_level, numthreads, skipexisting)
             min_zoom = z
     
         pdb.gimp_progress_update(float(z)/float(zoom_level)) 
-        
+    pdb.gimp_progress_end()
+    
     configData["minzoom"] = min_zoom
     pdb.gimp_image_delete(temp_img)
     
@@ -429,7 +433,7 @@ def leaflet_tile(image, layer, output_dir, zoom_level, numthreads, skipexisting)
     maxtiles = 0
     threadallocator = 0
     
-    gimp.progress_init("Registering zoom layers.")     
+    pdb.gimp_progress_init("Registering zoom layers.")     
     for z in xrange(zoom_level, -1, -1):
         # Don't bother trying to create tiles for zoom levels for which no image was created.
         if z in zoomImageMap:
@@ -437,7 +441,7 @@ def leaflet_tile(image, layer, output_dir, zoom_level, numthreads, skipexisting)
             for x in xrange(scaledDimension / BOX):
                 for y in xrange(scaledDimension / BOX):
                     maxtiles = maxtiles + 1
-                    newTile = Tile(x, y, z, zoomImageMap[z], output_dir, existingFiles, previousConfigData, skipexisting)
+                    newTile = Tile(x, y, z, zoomImageMap[z], output_dir, existingFiles, previousConfigData, resumeinterrupted)
 
                     workQueueList[threadallocator].addWork(newTile)
                     threadallocator = threadallocator + 1
@@ -445,8 +449,9 @@ def leaflet_tile(image, layer, output_dir, zoom_level, numthreads, skipexisting)
                         threadallocator = 0
                         
         pdb.gimp_progress_update(float(z)/float(zoom_level)) 
-
-    gimp.progress_init ("Tiling " + str(maxtiles) + " tiles.")    
+    pdb.gimp_progress_end()
+    
+    pdb.gimp_progress_init ("Tiling " + str(maxtiles) + " tiles.")    
     # Create threaded lists that divide up the work of the entire list of tile items.
     for workqueue in workQueueList:
         # gimp.message("Queuesize: " + str(len(workqueue.work)))
@@ -472,20 +477,22 @@ def leaflet_tile(image, layer, output_dir, zoom_level, numthreads, skipexisting)
                 active = status_check(workQueueList, configData)
                 # gimp.message("Active: " + str(active))
                 
-            if tileDoneCount % 50 == 0:
-                # Periodically save intermediate progress
+            if tileDoneCount % 100 == 0:
+                # Periodically save intermediate progress                
                 saveConfigData(output_dir, configData)
 
         if active == 0:
             pdb.gimp_progress_set_text("Saving Results.")
             pdb.gimp_progress_update(float(maxtiles - communicationQueue.qsize()) / float(maxtiles))
         else:
-            time.sleep(.2) # Brief pause to not consume CPU with constant unthrottled loop while threads are working.
+            time.sleep(0.0001) # Brief pause for status thread to yeild to worker threads.        
             active = status_check(workQueueList, configData)            
     
     # gimp.message("Main loop complete.")
     
     pdb.gimp_progress_set_text('Tiling Complete!')
+    pdb.gimp_progress_end()
+    
     saveConfigData(output_dir, configData)
 
     # Clean up memory.
@@ -508,7 +515,7 @@ register(
         (PF_DIRNAME, 'output_dir', 'Output directory', 'C:\\temp\\tiles'),
         (PF_SPINNER, 'zoom_level', 'Zoom level', ZOOM_DEFAULT, ZOOM_OPTIONS),
         (PF_SPINNER, 'numthreads', 'Thread pool size', THREADPOOL, THREAD_OPTIONS),
-        (PF_TOGGLE, "skipexisting", "Skip Existing Tiles", True)       
+        (PF_TOGGLE, "resumeinterrupted", "Resume Interrupted Job", False)       
     ],
     [],
     leaflet_tile,

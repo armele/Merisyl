@@ -5,12 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" id="leaflet_js-js"></script>
 	<link rel="stylesheet" id="leaflet_stylesheet-css" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" media="">	
+	<link rel="stylesheet" id="leaflet_stylesheet-css" href="https://unpkg.com/browse/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" media="">
+	<link rel="stylesheet" id="leaflet_stylesheet-css" href="https://unpkg.com/browse/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" media="">
+	<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster-src.js"></script>	
+	
+	<!-- Leaflet.FeatureGroup.SubGroup assets. See https://github.com/ghybs/Leaflet.FeatureGroup.SubGroup -->
+	<script src="https://unpkg.com/leaflet.featuregroup.subgroup@1.0.2/dist/leaflet.featuregroup.subgroup.js"></script>
+
+	<!-- Leaflet fullscreen plugin.  See https://github.com/Leaflet/Leaflet.fullscreen -->
+	<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+	<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
+	
 	<style>
 		path.leaflet-interactive:hover {
 			stroke-opacity: 1;
 			stroke-width: 1;
 			fill-opacity: .2;
-		}	
+		}
+		
+		.cluster {
+			width: 32px;
+			height: 32px;
+			line-height: 32px;
+			background-image: url('https://pathfinder-gm-tools.s3.amazonaws.com/map/MerisylMapClusterMarker.png');
+			text-align: center;
+			font-weight: bold;
+			color: white;
+		}		
 	</style>
   </head>
   
@@ -18,16 +39,29 @@
     <div id="map" style="width: 100%; height: 100%; background: #000000;"></div>
     <script type="text/javascript">
 		/* Portions adapted from: https://github.com/bozdoz/wp-plugin-leaflet-map/ */
-
 		/* BASIC CUSTOMIZATIONS */
-		var referencesize = 57344;
-		var metersPerPixel = .0717;  // Based on 257*223 pixel hex ~ 16 meters
-		var mapLocation = "https://pathfinder-gm-tools.s3.amazonaws.com/map/aodartiles/{z}/{x}/{y}.png"; // "https://new.merisyl.com/wp-content/uploads/2023/11/tiles/{z}/{x}/{y}.jpeg";
+		var referencesize = 57344;		// The dimensions of your (presumably square) source map.
+		var metersPerPixel = .07175;  	// = 16/223 Based on 257*223 pixel hex ~ 16 meters; dimensions are based on worldographer hex size at time of image export.
+		var mapLocation = "https://pathfinder-gm-tools.s3.amazonaws.com/map/aodartiles/{z}/{x}/{y}.png"; // S3 URI for this is: s3://pathfinder-gm-tools/map/aodartiles/
 		var locationsList = [
-			
+			"https://pathfinder-gm-tools.s3.amazonaws.com/map/FreeCityLandmarks.json"
 		];
 		
 		var useCustomMarkerIcon = true;
+		
+		// The keys in the map below should map to the "marker-group" property of the GeoJSON file in which locations are defined.
+		var customMarkers = {
+			"Default" : "https://pathfinder-gm-tools.s3.amazonaws.com/map/MerisylMapLocationMarker.png",
+			"Commercial" : "https://pathfinder-gm-tools.s3.amazonaws.com/map/MerisylMapLocationMarkerMerchant.png",
+			"Consortium" : "https://pathfinder-gm-tools.s3.amazonaws.com/map/MerisylMapLocationMarkerConsortium.png",
+			"Religious" : "https://pathfinder-gm-tools.s3.amazonaws.com/map/MerisylMapLocationMarkerReligious.png",
+			"Entertainment" : "https://pathfinder-gm-tools.s3.amazonaws.com/map/MerisylMapLocationMarkerEntertainment.png",
+			"Inns and Taverns" : "https://pathfinder-gm-tools.s3.amazonaws.com/map/MerisylMapLocationMarkerTaverns.png",
+			"Residence" : "https://pathfinder-gm-tools.s3.amazonaws.com/map/MerisylMapLocationMarkerResidence.png",
+			"Park" : "https://pathfinder-gm-tools.s3.amazonaws.com/map/MerisylMapLocationMarkerPark.png",
+			"Guild" : "https://pathfinder-gm-tools.s3.amazonaws.com/map/MerisylMapLocationMarkerGuild.png"
+		}
+
 
 		/* ADVANCED CUSTOMIZATIONS */
 		var pixelsPerTile = 256;
@@ -69,7 +103,14 @@
 		});
   
 	//Creating the Map
-    var map = L.map('map',{crs: L.CRS.pr}).setView([-38, 35], 6);
+    var map = L.map('map',
+		{
+			crs: L.CRS.pr,
+			fullscreenControl: true,
+		}
+	);
+	
+	var layerDisplayGroups = {}
 	
 	var mapBounds = new L.LatLngBounds(
 	map.unproject([0, referencesize], 8),
@@ -97,6 +138,24 @@
 		loadGeoJSON(locationsList[geoData]);
 	}
 	
+	locationFinder(map);
+	setInitialLocation(map);
+	
+	/* investigate the URL for specific location to view, and set the map to that */
+	function setInitialLocation(map) {
+		var passedLat = parseInt(getQueryStringValue("lat"), 0);
+		var passedLng = parseInt(getQueryStringValue("lng"), 0);
+		var passedZoom = parseInt(getQueryStringValue("zoom"), 0);
+		
+		if (passedLat != 0) {
+			console.log("Requested location: " + passedLat + ", " + passedLng + ", Zoom: " + passedZoom);		
+			map.setView([passedLat, passedLng], passedZoom);
+		} else {
+			console.log("No requested location.");
+			map.setView([-38, 35], 6);
+		}
+	}
+		
 	function layerStyle (feature) {
 		var default_style = {
 			"color" : "#eaeaea",
@@ -140,20 +199,27 @@
 	
 	function pointToLayer (feature, latlng) {
 		var markerOptions = {};			// See https://leafletjs.com/reference.html#marker for options
+		var props = feature.properties || {};
+		var markerKey = props["marker-group"] || "";		
+		var customIconURL  = customMarkers["Default"];
 		
-		var cityIcon = L.icon({
-			iconUrl: 'https://pathfinder-gm-tools.s3.amazonaws.com/map/castleMarker.png',
-			shadowUrl: 'https://pathfinder-gm-tools.s3.amazonaws.com/map/castleMarkerShadow.png',
+		if (customMarkers.hasOwnProperty(markerKey)) {
+			customIconURL = customMarkers[markerKey];
+		}		
+		
+		var customIcon = L.icon({
+			iconUrl: 		customIconURL,
+			shadowUrl: 		'https://pathfinder-gm-tools.s3.amazonaws.com/map/MerisylMapLocationMarkerShadow.png',
 
-			iconSize:     [24, 50], 	// size of the icon
-			shadowSize:   [30, 25], 	// size of the shadow
-			iconAnchor:   [12, 50], 	// point of the icon which will correspond to marker's location
-			shadowAnchor: [10, 25],  	// the same for the shadow
-			popupAnchor:  [0, -30] 	// point from which the popup should open relative to the iconAnchor
+			iconSize:     	[30, 42], 	// size of the icon
+			shadowSize:   	[26, 38], 	// size of the shadow
+			iconAnchor:   	[15, 42], 	// point of the icon which will correspond to marker's location
+			shadowAnchor: 	[02, 38],  	// the same for the shadow
+			popupAnchor:  	[00, -20] 	// point from which the popup should open relative to the iconAnchor
 		});		
 
 		if (useCustomMarkerIcon) {
-			markerOptions["icon"] = cityIcon;   
+			markerOptions["icon"] = customIcon;   
 		}
 		
 		return L.marker(latlng, markerOptions);
@@ -166,8 +232,9 @@
 			onEachFeature : onEachFeature,
 			pointToLayer: pointToLayer
 		});	
-		
-		layer.addTo(map);
+	
+		console.log("Adding layer to map.");
+		layer.addTo(map);		
 	}
 	
 	function initAjaxGeoJSON() {
@@ -180,12 +247,15 @@
 			L.setOptions(this, options);
 			this._url = url;
 			this.layer = L.geoJson(null, this.options);
+			this.layer.isGeo = true;
 		  },
 
 		  onAdd: function (map) {
 			var _this = this;
 			var type = this.options.type;
 			var xhr;
+
+			console.log("triggered onAdd");
 
 			this.map = map;
 
@@ -204,6 +274,9 @@
 				  }
 				  _this.json = data;
 				  _this.layer.addData(data);
+				  
+				  organizeClusters(map);
+				  
 				  _this.fire('ready');
 				}
 			  };
@@ -240,28 +313,113 @@
 		  return new L.AjaxGeoJSON(url, options);
 		};
 	}	
-	
-	/* Unused
-	function loadGeoJSON(targetfile) {
-        if (targetfile) {
-          var xhr = new XMLHttpRequest();
 
-          xhr.onreadystatechange = function () {
-            var data;
-            if (xhr.readyState === xhr.DONE && xhr.status === 200) {
-              data = JSON.parse(xhr.responseText);
-			  console.log(data);
-			  L.geoJSON(data).addTo(map);	
-            }
-          };
-
-          xhr.open('get', targetfile, true);
-
-          xhr.send();
-        }	
+	function locationFinder(map) {
+		//Coordinate Finder
+		var marker = L.marker([0, 0], {
+		  draggable: true,
+		}).addTo(map);
+		
+		marker.bindPopup('Location Finder').openPopup();
+		marker.on('dragend', function(e) {
+		  marker.getPopup().setContent(JSON.stringify(marker.toGeoJSON())).openOn(map);
+		});	
 	}
+	
+	/* Given a marker-group key, return the corresponding layer group to display, or create it if not already present */
+	function displayGroup(key, clusterGroup) {
+		var ldg;
+		
+		if (layerDisplayGroups.hasOwnProperty(key)) {
+			ldg = layerDisplayGroups[key];
+		} else {
+			ldg = L.featureGroup.subGroup(
+				clusterGroup,
+				null,
+			);
+			layerDisplayGroups[key] = ldg;
+			clusterGroup.addLayer(ldg);
+		}
+		
+		return ldg;
+	}
+	
+	function organizeClusters(map) {
+		console.log("Organizing clusters.");
+		// L.DomUtil.TRANSITION = true;
+		
+		clusterGroup = L.markerClusterGroup({
+			iconCreateFunction: function(cluster) {
+				var markers = cluster.getAllChildMarkers();
+				var html = '<div class="cluster">' + markers.length + '</div>';
+				return L.divIcon({ html: html, className: 'clusterIcon', iconSize: L.point(32, 32) });
+			},
+			spiderfyOnMaxZoom: false, 
+			showCoverageOnHover: true, 
+			zoomToBoundsOnClick: true,
+			animate: false
+		}); 
+		
+		map.eachLayer(function(layer){
+			if (layer.isGeo) {
+				console.log("Identified GEO layer");
+				
+				map.removeLayer(layer);
+				layer.eachLayer(function (sublayer) {
+					var feature = sublayer.toGeoJSON();
+					
+					console.log(JSON.stringify(feature));
+					
+					var props = feature.properties || {};
+					var layerKey = props["marker-group"] || "";
+					if (layerKey) {
+						var layergroup = displayGroup(layerKey, clusterGroup); 
+						layergroup.addLayer(sublayer);
+						console.log("Added to layergroup: " + layerKey);
+					} else {
+						clusterGroup.addLayer(sublayer);
+					}
+				});
+				// clusterGroup.addLayer(layer);
+			}
+		});
+		
+		
+		Object.entries(layerDisplayGroups).forEach((entry) => {
+		  const [key, value] = entry;
+		  map.addLayer(value);
+		});
+		
+		map.addLayer(clusterGroup);
+		
+		L.control.layers(null, layerDisplayGroups, {"collapsed": false, "sortLayers": true} ).addTo(map);
+		
+	}
+	
+	/* 	Location management adapted from:
+		https://stackoverflow.com/questions/44757839/link-to-a-specific-point-on-leaflet-map 
+		https://humanwhocodes.com/blog/2013/04/16/getting-the-url-of-an-iframes-parent		
 	*/
-  //Markers
+	function getQueryStringValue (key) {  
+		var isInIframe = (parent !== window),
+			referenceSearch = null;
+
+		// If this page is being used within an iFrame, consult the parent URL for the arguments. DEPRECATED (cross-origin error)
+		if (isInIframe) {
+			//const parentUrl = window.parent.location.href;
+			//referenceSearch = parentUrl.split('?')[1];
+			referenceSearch = window.location.search;		// Works only assuming parent page is responsible for passing the parameters(from wordpress, using advanced iframe plugin, for example)
+		} else {
+			referenceSearch = window.location.search;
+		}
+		
+		const urlParams = new URLSearchParams(referenceSearch);
+	
+		console.log("isInIframe: " + isInIframe + ", Location search: " + referenceSearch + "; params: " + urlParams);	
+		
+		return urlParams.get(key);
+	} 
+	
     </script>
   </body>
 </html>
