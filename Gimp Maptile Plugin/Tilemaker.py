@@ -346,11 +346,7 @@ def list_files_recursive(directory):
     return file_paths
 
 def inventoryExistingFiles(output_dir):
-    pdb.gimp_progress_init("Inventorying existing files.")  
-    
     existingFiles = list_files_recursive(output_dir)
-    
-    pdb.gimp_progress_end()
     
     return existingFiles
     # Approach below is quite slow.
@@ -370,16 +366,18 @@ def leaflet_tile(image, layer, output_dir, zoom_level, numthreads, resumeinterru
     zoomImageMap = {}
     workQueueList = []
 
+    gimp.progress_init("Evalutating current state.")  
     configData = initializeConfig()
     previousConfigData = loadPreviousConfig(output_dir)
     existingFiles = inventoryExistingFiles(output_dir)
+    pdb.gimp_progress_end()
     
     # Assisting Debug
     # configData["existingFiles"] = existingFiles
     # configData["previousConfigData"] = previousConfigData
     
     # Ensure we are not maniuplating the source image - just a copy of it.    
-    pdb.gimp_progress_init("Preparing source image.") 
+    gimp.progress_init("Preparing source image.") 
     temp_img = image.duplicate()
     temp_img.disable_undo()
 
@@ -408,7 +406,7 @@ def leaflet_tile(image, layer, output_dir, zoom_level, numthreads, resumeinterru
     pdb.gimp_progress_end()
     
     # Scale a source image for each zoom level.
-    pdb.gimp_progress_init("Preparing zoom masters.") 
+    gimp.progress_init("Preparing zoom masters.") 
     for z in xrange(zoom_level, -1, -1):
         # The min zoom is the point at which the map size is no longer evenly divisible into BOX-sized chunks.
         if scaledDimension % BOX == 0:
@@ -433,7 +431,7 @@ def leaflet_tile(image, layer, output_dir, zoom_level, numthreads, resumeinterru
     maxtiles = 0
     threadallocator = 0
     
-    pdb.gimp_progress_init("Registering zoom layers.")     
+    gimp.progress_init("Registering zoom layers.")     
     for z in xrange(zoom_level, -1, -1):
         # Don't bother trying to create tiles for zoom levels for which no image was created.
         if z in zoomImageMap:
@@ -451,7 +449,7 @@ def leaflet_tile(image, layer, output_dir, zoom_level, numthreads, resumeinterru
         pdb.gimp_progress_update(float(z)/float(zoom_level)) 
     pdb.gimp_progress_end()
     
-    pdb.gimp_progress_init ("Tiling " + str(maxtiles) + " tiles.")    
+    gimp.progress_init ("Tiling " + str(maxtiles) + " tiles.")    
     # Create threaded lists that divide up the work of the entire list of tile items.
     for workqueue in workQueueList:
         # gimp.message("Queuesize: " + str(len(workqueue.work)))
