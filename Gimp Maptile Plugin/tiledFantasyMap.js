@@ -345,8 +345,12 @@
 		
 		map.addLayer(clusterGroup);
 		
-		L.control.layers(null, layerDisplayGroups, {"collapsed": false, "sortLayers": true} ).addTo(map);
+		var layerControl = L.control.layers(null, layerDisplayGroups, {"collapsed": false, "sortLayers": true} ).addTo(map);
 		
+		if (layerControl._layers. length == 0) {
+			layerControl.remove();
+		}
+
 	}
 	
 	/* 	Location management adapted from:
