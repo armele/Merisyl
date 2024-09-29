@@ -53,7 +53,7 @@ My criteria were that the map was served up using tiles, that the scale was corr
 
 Here are the steps needed to repurpose this HTML for your own map:
 * Find the "Basic Customizations" section of the html file.
-* Update "referencesize" to the side length of your **tilebase image**.
+* Update "referencesize" to the side length of your **tilebase image**. (Note - using your original image size will not work, as the tiling logic will scale it up to be a multiple of 256.)
 * Update "metersPerPixel" to indicate the geographic length in meters of one pixel on your **tilebase image**.
 * Update "mapLocation" to where your tile folders were created. I am hosting mine in Wordpress, but intend to move them to Amazon S3. If you are using this map locally only, this can be a drive location with a path relative to the location of the .HTML file.
 * Comment out (or replace) the contents of locatonsList. These are entries of points of interest, using the [GEOJSON](https://geojson.org/) format supported by Leaflet.
