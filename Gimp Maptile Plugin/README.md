@@ -47,7 +47,7 @@ You may want to copy these into an s3 bucket for use. One way to do this (with t
 * aws s3 sync . s3_destination_bucket
 
 ### Configure an HTML Page
-Knowing that I wanted to host this on a Wordpress site, I first investigated the Wordpress Leaflet Map plugin (https://wordpress.org/plugins/leaflet-map/).  It is an excellent plugin, but designed for real-world scenarios, and ultimately did not give me exactly what I wanted.  I ended up coding the Leaflet JavaScript directly.  The following explanation is based on the [merisylMap.html](https://github.com/armele/Merisyl/blob/master/Gimp%20Maptile%20Plugin/merisylMap.html) (which you're welcome to use as the basis for your own customization).
+Knowing that I wanted to host this on a Wordpress site, I first investigated the Wordpress Leaflet Map plugin (https://wordpress.org/plugins/leaflet-map/).  It is an excellent plugin, but designed for real-world scenarios, and ultimately did not give me exactly what I wanted.  I ended up coding the Leaflet JavaScript directly.  The following explanation is based on the [merisylMap.html](https://github.com/armele/Merisyl/blob/master/Gimp%20Maptile%20Plugin/merisylMap.html) (which you're welcome to use as the basis for your own customization).  It requires also that [tiledFantasyMap.js](https://github.com/armele/Merisyl/blob/master/Gimp%20Maptile%20Plugin/tiledFantasyMap.js) be present in the same location.
 
 My criteria were that the map was served up using tiles, that the scale was correct for the map, and that the latitude and longitude markers corresponded to the pixels of the underlying map.
 
