@@ -15,7 +15,14 @@
 	<!-- Leaflet fullscreen plugin.  See https://github.com/Leaflet/Leaflet.fullscreen -->
 	<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
 	<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
-
+	<!-- MEASURE: modified to allow measurements. -->
+	<link
+		rel="stylesheet"
+		href="https://cdn.jsdelivr.net/gh/gokertanrisever/leaflet-ruler@master/src/leaflet-ruler.css"
+		integrity="sha384-P9DABSdtEY/XDbEInD3q+PlL+BjqPCXGcF8EkhtKSfSTr/dS5PBKa9+/PMkW2xsY"
+		crossorigin="anonymous"
+	/>
+	<!-- END MEASURE -->
 	<script src='./tiledFantasyMap.js'></script>
 	
 	<style>
@@ -67,8 +74,12 @@
 			"Guild" : "https://pathfinder-gm-tools.s3.amazonaws.com/map/MerisylMapLocationMarkerGuild.png",
 			"Embassy" : "https://pathfinder-gm-tools.s3.amazonaws.com/map/MerisylMapLocationMarkerEmbassy.png"			
 		}
-
-		var map = fantasyMap(mapLocation, mapDim, locationsList, useCustomMarkerIcon, customMarkers);
+		
+		/* MEASURE: Modified to allow measurements. */
+		var map = fantasyMap(mapLocation, mapDim, locationsList, useCustomMarkerIcon, customMarkers).then(function(map) {
+			L.control.ruler().addTo(map);
+		});
+		/* END MEASURE */
 
 	
     </script>
