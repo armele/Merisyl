@@ -53,13 +53,13 @@
 		
 		
 		/* BASIC CUSTOMIZATIONS */
-		mapDim.referencesize = 20480;
-		mapDim.metersPerPixel = 619.09;
-		mapDim.minzoom = 4;
+		mapDim.referencesize = 81920; // 20480;
+		mapDim.metersPerPixel = 154.78;
+		mapDim.minzoom = 2;
 		
-		var mapLocation = "https://pathfinder-gm-tools.s3.amazonaws.com/map/worldtiles/{z}/{x}/{y}.jpg"; // "https://new.merisyl.com/wp-content/uploads/2023/11/tiles/{z}/{x}/{y}.jpeg";
+		var mapLocation = "https://pathfinder-gm-tools.s3.amazonaws.com/map/worldtiles/{z}/{x}/{y}.png"; // "https://new.merisyl.com/wp-content/uploads/2023/11/tiles/{z}/{x}/{y}.jpeg";
 		var locationsList = [
-			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Aodar.geojson",
+			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Aodar.geojson",			
 			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Aunea.geojson",
 			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Aurix.geojson",
 			"https://pathfinder-gm-tools.s3.amazonaws.com/map/Buyre.geojson",
@@ -78,6 +78,7 @@
 		/* MEASURE: Modified to allow measurements. */
 		var map = fantasyMap(mapLocation, mapDim, locationsList, useCustomMarkerIcon, customMarkers).then(function(map) {
 			L.control.ruler().addTo(map);
+			map.setView([9000, -3000], 2); // Set the starting location and zoom level.
 		});
 		/* END MEASURE */
 	
