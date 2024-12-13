@@ -82,13 +82,72 @@ async function fantasyMap(mapLocation, mapDim, locationsList, useCustomMarkerIco
     }
 
     console.log("Locations list read.");
-
-    locationFinder(map);
+	
+	registerOverrides(map);
+	
     setInitialLocation(map);
 
     console.log("Done setting up the map!");
 
     return map;
+}
+
+/* Provide a hook to do some base functionality overriding once the map is created. */
+function registerOverrides(map) {
+	// Redefine the _performZoom of ScrollWheelZoom to include a notification when zoom attempts are "blocked".
+	L.Map.ScrollWheelZoom.prototype._performZoom = function () {
+		var map = this._map,
+			zoom = map.getZoom(),
+			snap = this._map.options.zoomSnap || 0;
+
+		map._stop(); // stop panning and fly animations if any
+
+		// map the delta with a sigmoid function to -4..4 range leaning on -1..1
+		var d2 = this._delta / (this._map.options.wheelPxPerZoomLevel * 4),
+			d3 = 4 * Math.log(2 / (1 + Math.exp(-Math.abs(d2)))) / Math.LN2,
+			d4 = snap ? Math.ceil(d3 / snap) * snap : d3,
+			delta = map._limitZoom(zoom + (this._delta > 0 ? d4 : -d4)) - zoom;
+
+		this._delta = 0;
+		this._startTime = null;
+
+		if (!delta) { 
+			map.fire("blockedzoom");
+			return; 
+		}
+
+		if (map.options.scrollWheelZoom === 'center') {
+			map.setZoom(zoom + delta);
+		} else {
+			map.setZoomAround(this._lastMousePos, zoom + delta);
+		}
+	};
+	
+	L.Map.include({
+		// Adding a new property to the class
+		_superZoom: new Map(),
+		
+		// Redefining a method
+		szZoomBoundary: function(latLng) { 
+			const southWestCorner = L.latLng(latLng.lat - 128, latLng.lng + 128);
+			const northEastCorner = L.latLng(latLng.lat + 128, latLng.lng - 128);
+			const targetBounds = L.latLngBounds(southWestCorner, northEastCorner);	
+			return targetBounds;
+		}
+
+	});	
+	
+	map.on('blockedzoom', () => {
+		console.log("Blocked zoom attempt.");
+		let atMaxZoom = (map.getZoom() === map.getMaxZoom());
+		
+		map._superZoom.forEach(function (value, key) {
+			if (atMaxZoom && map.getBounds().intersects(map.szZoomBoundary(key))) {
+				// Open the new URL in an active new tab
+				window.open(value, '_superzoom').focus();
+			}
+		});
+	});	
 }
 
 /* investigate the URL for specific location to view, and set the map to that */
@@ -138,6 +197,8 @@ function layerStyle(feature) {
     }
     return L.Util.extend(style, default_style);
 }
+			
+
 
 function onEachFeature(feature, layer) {
     var props = feature.properties || {};
@@ -265,6 +326,22 @@ function initAjaxGeoJSON(layerDisplayGroups) {
     };
 }
 
+// Function to get tile coordinates of a marker location at a given zoom level
+function getTileCoordinates(map, marker, zoom) {
+    // Get the latitude and longitude of the marker
+    const latLng = marker.getLatLng();
+    
+    // Convert latLng to pixel coordinates at the target zoom level
+    const pixelPoint = map.project(latLng, zoom);
+    
+    // Calculate tile coordinates by dividing pixel coordinates by tile size (256px)
+    const tileSize = 256;
+    const tileX = Math.floor(pixelPoint.x / tileSize);
+    const tileY = Math.floor(pixelPoint.y / tileSize);
+    
+    return { x: tileX, y: tileY, z: zoom };
+}
+
 function locationFinder(map) {
     //Coordinate Finder
     var marker = L.marker([0, 0], {
@@ -273,7 +350,11 @@ function locationFinder(map) {
 
     marker.bindPopup('Location Finder').openPopup();
     marker.on('dragend', function (e) {
-        marker.getPopup().setContent(JSON.stringify(marker.toGeoJSON())).openOn(map);
+		var markerText = JSON.stringify(marker.toGeoJSON());
+		var targetZoom = 8;
+		const tileCoords = getTileCoordinates(map, marker, targetZoom);
+		markerText = markerText + "\n" + `Tile Coordinates at Zoom ${targetZoom}: x=${tileCoords.x}, y=${tileCoords.y}, z=${tileCoords.z}`;
+        marker.getPopup().setContent(markerText).openOn(map);
     });
 }
 
