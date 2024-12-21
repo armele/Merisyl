@@ -342,19 +342,50 @@ function getTileCoordinates(map, marker, zoom) {
     return { x: tileX, y: tileY, z: zoom };
 }
 
-function locationFinder(map) {
-    //Coordinate Finder
-    var marker = L.marker([0, 0], {
-        draggable: true,
-    }).addTo(map);
+function updateLocationLabel(map, marker) {
+    if (!marker) return; // Ensure marker is defined
+    const targetZoom = map.getZoom();
+    const tileCoords = getTileCoordinates(map, marker, targetZoom);
+	const latLng = marker.getLatLng();
 
-    marker.bindPopup('Location Finder').openPopup();
-    marker.on('dragend', function (e) {
-		var markerText = JSON.stringify(marker.toGeoJSON());
-		var targetZoom = 8;
-		const tileCoords = getTileCoordinates(map, marker, targetZoom);
-		markerText = markerText + "\n" + `Tile Coordinates at Zoom ${targetZoom}: x=${tileCoords.x}, y=${tileCoords.y}, z=${tileCoords.z}`;
-        marker.getPopup().setContent(markerText).openOn(map);
+    const markerText = `
+        <a href="${window.location.origin + window.location.pathname}?lat=${latLng.lat}&lng=${latLng.lng}&zoom=${targetZoom}">
+            Tile Coordinates at Zoom ${targetZoom}: x=${tileCoords.x}, y=${tileCoords.y}, z=${tileCoords.z}
+        </a>`;
+    marker.getPopup().setContent(markerText); // Update popup content
+}
+
+function locationFinder(map) {
+    let activeMarker = null; // Track the active marker
+
+    map.on('contextmenu', (e) => {
+        // Remove the previous marker, if any
+        if (activeMarker) map.removeLayer(activeMarker);
+
+        // Create a new marker
+        activeMarker = L.marker(e.latlng, { draggable: true }).addTo(map);
+
+        activeMarker.bindPopup('Location Finder').openPopup();
+
+        // Update the label immediately
+        updateLocationLabel(map, activeMarker);
+
+        // Add dragend event listener
+        activeMarker.on('dragend', () => {
+			updateLocationLabel(map, activeMarker);
+			activeMarker.openPopup();
+		});
+    });
+
+    map.on('moveend zoomend', () => {
+        if (!activeMarker) return; // Ensure marker exists
+        const markerBounds = map.getBounds();
+
+        if (!markerBounds.contains(activeMarker.getLatLng())) {
+            activeMarker.closePopup(); // Close popup if marker is outside view
+        } else {
+            updateLocationLabel(map, activeMarker); // Update label on zoom change
+        }
     });
 }
 

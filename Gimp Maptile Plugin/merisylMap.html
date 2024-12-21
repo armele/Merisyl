@@ -78,7 +78,7 @@
 		/* MEASURE: Modified to allow measurements. */
 		var map = fantasyMap(mapLocation, mapDim, locationsList, useCustomMarkerIcon, customMarkers).then(function(map) {
 			L.control.ruler().addTo(map);
-			map.setView([9000, -3000], 2); // Set the starting location and zoom level.	
+			// map.setView([9000, -3000], 2); // Set the starting location and zoom level.	
 			map._superZoom.set(L.latLng(18100, -1340), "https://merisyl.com/gazette/chayle/aodar/aodar-free-city-map/?lng=1&lat=1&zoom=2"); // Set up a "Super Zoom" that lets you zoom into another map at a given point.
 			map._superZoom.set(L.latLng(415, -2431), "https://new.merisyl.com/gazette/chayle/notch/notch-map/?lat=1&lng=1&zoom=2"); // Set up a "Super Zoom" that lets you zoom into another map at a given point.
 			
