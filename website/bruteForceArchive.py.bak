@@ -1,0 +1,99 @@
+import os
+import requests
+from urllib.parse import urljoin, urlparse
+from bs4 import BeautifulSoup
+
+def save_html(content, filename):
+    """Saves the HTML content to a file."""
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(content)
+
+def crawl(url, parent, base_domain, visited, output_dir, log_file):
+    """Recursively crawls links within the same domain and logs output."""
+    if url in visited:
+        log_file.write(f"Skipping: {url} from {parent}\n")
+        return
+
+    print(f"Crawling: {url} from {parent}\n")
+    
+    log_file.write(f"Crawling: {url} from {parent}\n")
+    try:
+        response = requests.get(url, timeout=10)
+        if response.status_code != 200:
+            log_file.write(f"Failed to fetch: {url} (Status code: {response.status_code})\n")
+            return
+
+        # Save the HTML content
+        url_path = urlparse(url).path.strip("/")
+        filename = os.path.join(output_dir, f"{url_path.replace('/', '_') or 'index'}.html")
+        if urlparse(url).query:  # Handle query parameters
+            query_part = urlparse(url).query.replace('&', '_').replace('=', '-')
+            filename = filename.replace(".html", f"_{query_part}.html")
+        
+        save_html(response.text, filename)
+
+        # Mark as visited
+        visited.add(url)
+
+        # Parse and find new links
+        soup = BeautifulSoup(response.text, "html.parser")
+        for link in soup.find_all("a"):
+            log_file.write(f"Full link tag: {link}\n")
+            log_file.write(f"Attributes of link: {link.attrs}\n")           
+            
+            # Extract href attribute
+            raw_href = link.attrs.get("href", "").strip()
+            
+            if not raw_href:
+                log_file.write(f"Skipping link without href: {link}\n")
+                continue
+
+            # Log the found link and its resolved URL
+            log_file.write(f"Extracted (raw) href: {raw_href}\n") 
+            
+            # If href is already a full URL, use it directly
+            if raw_href.startswith("http://") or raw_href.startswith("https://"):
+                new_url = raw_href
+            else:
+                # Resolve relative URL using urljoin
+                new_url = urljoin(url, raw_href)
+
+            # Normalize the URL to avoid duplicates (e.g., "https://example.com/foo" vs "https://example.com/foo/")
+            new_url = new_url.rstrip("/")
+
+            log_file.write(f"Resolved URL: {new_url}\n")
+            
+            parsed_new_url = urlparse(new_url)
+
+            # Skip if not within the same domain
+            if parsed_new_url.netloc != base_domain:
+                continue
+
+            # Add to crawl queue if not visited
+            if new_url not in visited:
+                crawl(new_url, url, base_domain, visited, output_dir, log_file)
+
+    except requests.RequestException as e:
+        log_file.write(f"Error crawling {url}: {e}\n")
+
+def main():
+    start_url = input("Enter the website homepage URL: ").strip()
+    parsed_start = urlparse(start_url)
+    base_domain = parsed_start.netloc
+
+    if not base_domain:
+        print("Invalid URL. Please provide a full URL (e.g., https://example.com).")
+        return
+    
+    output_dir = "crawled_pages"
+    os.makedirs(output_dir, exist_ok=True)
+    
+    visited = set()
+    
+    with open("output.log", "w", encoding="utf-8") as log_file:
+        crawl(start_url, "Root", base_domain, visited, output_dir, log_file)
+
+# Usage example
+if __name__ == "__main__":
+    main()

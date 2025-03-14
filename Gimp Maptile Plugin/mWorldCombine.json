@@ -1,0 +1,15 @@
+{
+    "images": {
+        "quadrant1": "MWorldMapUpperLeft.png",
+        "quadrant2": "MWorldMapUpperRight.png",
+        "quadrant3": "MWorldMapLowerLeft.png",
+        "quadrant4": "MWorldMapLowerRight.png"
+    },
+    "anchor_points": {
+        "quadrant1": [100, 100],
+        "quadrant2": [150, 100],
+        "quadrant3": [100, 150],
+        "quadrant4": [150, 150]
+    },
+    "output": "combined_image.png"
+}
