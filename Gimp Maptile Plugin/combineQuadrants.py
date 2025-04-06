@@ -47,6 +47,8 @@ def main(config_path):
     # Load config
     config = load_config(config_path)
 
+    Image.MAX_IMAGE_PIXELS = None
+
     # Load images
     images = [Image.open(config['images'][f'quadrant{i+1}']) for i in range(4)]
 

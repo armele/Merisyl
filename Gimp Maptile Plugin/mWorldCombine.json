@@ -1,15 +1,15 @@
 {
     "images": {
-        "quadrant1": "MWorldMapUpperLeft.png",
-        "quadrant2": "MWorldMapUpperRight.png",
-        "quadrant3": "MWorldMapLowerLeft.png",
-        "quadrant4": "MWorldMapLowerRight.png"
+        "quadrant1": "M:\\DungeonsAndDragons\\Merisyl\\Maps\\MWorldMapUpperLeft.png",
+        "quadrant2": "M:\\DungeonsAndDragons\\Merisyl\\Maps\\MWorldMapUpperRight.png",
+        "quadrant3": "M:\\DungeonsAndDragons\\Merisyl\\Maps\\MWorldMapLowerLeft.png",
+        "quadrant4": "M:\\DungeonsAndDragons\\Merisyl\\Maps\\MWorldMapLowerRight.png"
     },
     "anchor_points": {
-        "quadrant1": [100, 100],
-        "quadrant2": [150, 100],
-        "quadrant3": [100, 150],
-        "quadrant4": [150, 150]
+        "quadrant1": [40050, 33800],
+        "quadrant2": [74, 33799],
+        "quadrant3": [40050, 38],
+        "quadrant4": [57, 36]
     },
     "output": "combined_image.png"
 }
