@@ -66,6 +66,40 @@ Set the "IFRAME URL" configuration setting to the location of your HTML file.  (
 ### Making Mouseovers:
 If you want a walk-through on how to create areas of interest on the map that are highlighted when you mouse-over them and can hyperlink to a detail page, contact me on Discord: [al_mele](https://discordapp.com/channels/@me/al_mele/).  I'm happy to do it, but only if someone will actually read it. :)  It is a bit kludgey now, as it is just used by me.
 
+## My Map is too big for Worldographer Export
+### Export in Chunks
+Use the option Edit->Select Map Area.
+Use the mini-map to pick a central location that will appear in all four quadrants.
+Click once to set the first selection point.
+Use the mini-map to change your map focus (rather than dragging).
+Click a second time to set the opposite corner of the selection rectangle.
+Export this quadrant (File->Export Selected Area as Image)
+Repeat for each quadrant, ensuring that a common point of the map exists in all four quadrants. 
+
+### Merge the Chunks
+Set up a JSON file that lists the files and their overlapping points, like so:
+```
+{
+    "images": {
+        "quadrant1": "M:\\DungeonsAndDragons\\Merisyl\\Maps\\MWorldMapUpperLeft.png",
+        "quadrant2": "M:\\DungeonsAndDragons\\Merisyl\\Maps\\MWorldMapUpperRight.png",
+        "quadrant3": "M:\\DungeonsAndDragons\\Merisyl\\Maps\\MWorldMapLowerLeft.png",
+        "quadrant4": "M:\\DungeonsAndDragons\\Merisyl\\Maps\\MWorldMapLowerRight.png"
+    },
+    "anchor_points": {
+        "quadrant1": [40050, 33800],
+        "quadrant2": [74, 33799],
+        "quadrant3": [40050, 38],
+        "quadrant4": [57, 36]
+    },
+    "output": "combined_image.png"
+}
+```
+
+The anchor points use the coordinates of their corresponding image **and should all correspond to the same point in the merged image**.
+
+Run combineQuadrants.py, passing the name of your json file above on the command line.
+
 ## Improvements Not Yet Implemented:
 * In the HTML, create error handling for bad GEOJSON formatting.
 
